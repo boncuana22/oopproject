@@ -11,8 +11,16 @@ private:
 	string time;
 	eventType type;
 public:
-	//constructor with parameters
-	Event(char* _name, string _date, string _time, eventType _type) {
+	//constructors
+	Event()
+	{
+		this->name = new char[strlen("match name") + 1];
+		strcpy_s(this->name, strlen("match name") + 1, "match name");
+
+		this->type = other;
+	}
+
+	Event(const char* _name, string _date, string _time) {
 		if (name != nullptr && strlen(name) > 1)
 		{
 			this->name = new char[strlen(name) + 1];
@@ -25,7 +33,6 @@ public:
 		}
 		this->date = _date;
 		this->time = _time;
-		this->type = _type;
 	}
 
 	//setters
@@ -79,6 +86,7 @@ public:
 		return type;
 	}
 
+	//copy constructor
 	Event(const Event& e) {
 		if (e.name != nullptr)
 		{
@@ -95,6 +103,7 @@ public:
 		this->type = e.type;
 	}
 
+	//destructor
 	~Event()
 	{
 		if (this->name != nullptr)

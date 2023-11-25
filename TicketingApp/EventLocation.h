@@ -11,16 +11,22 @@ private:
 public:
 	//constructor
 	EventLocation(string _name, int _maxSeats) {
-		name = _name;
-		maxSeats = _maxSeats;
+		this->name = _name;
+		this->maxSeats = _maxSeats;
 	}
 
 	//setters & getters
 	void setMaxSeats(int _maxSeats) {
-		maxSeats = _maxSeats;
+		if (maxSeats >= 0 && maxSeats <= 30000)
+			this->maxSeats = _maxSeats;
 	}
 	int setMaxSeats() {
 		return maxSeats;
 	}
 
+	//copy constructor
+	EventLocation(const EventLocation& el){
+		this->name = el.name;
+		this->maxSeats = el.maxSeats;
+	}
 };

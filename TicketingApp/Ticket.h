@@ -2,7 +2,7 @@
 #include<iostream>
 using namespace std;
 
-enum ticketType{VIP, GoldenCircle, Tribune1, Tribune2 };
+enum ticketType{VIP, GoldenCircle, Tribune, other };
 
 class Ticket {
 private:
@@ -20,7 +20,8 @@ public:
 		this->ticketID = _ticketID;
 	}
 	void setType(ticketType _type) {
-		this->type = _type;
+		if (type >= 0 && type <= 4)
+			this->type = type;
 	}
 
 	//getters
@@ -31,4 +32,9 @@ public:
 		return type;
 	}
 
+	//copy constructor
+	Ticket(const Ticket& t) {
+		this->ticketID = t.ticketID;
+		this->type = t.type;
+	}
 };
