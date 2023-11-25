@@ -1,8 +1,9 @@
 #include<iostream>
+#include<string>
 using namespace std;
 
-
-class Event {
+//class Event
+/*class Event {
 private:
 	string name;
 	string date;
@@ -37,6 +38,7 @@ public:
 	}
 
 };
+*/
 
 
 class EventLocation {
