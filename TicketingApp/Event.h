@@ -2,23 +2,104 @@
 #include<iostream>
 using namespace std;
 
+enum eventType { football_game, handball_game, basketball_game, other };
+
 class Event {
 private:
-	string name;
+	char* name;
 	string date;
 	string time;
+	eventType type;
 public:
-	//default constructor
-	Event(string name="", string date="",string time="");
+	//constructor with parameters
+	Event(char* _name, string _date, string _time, eventType _type) {
+		if (name != nullptr && strlen(name) > 1)
+		{
+			this->name = new char[strlen(name) + 1];
+			strcpy_s(this->name, strlen(name) + 1, name);
+		}
+		else
+		{
+			cout << "Enter a valid event name:";
+
+		}
+		this->date = _date;
+		this->time = _time;
+		this->type = _type;
+	}
 
 	//setters
-	void setName(string _name);
-	void setDate(string _date);
-	void setTime(string _time);
+	void setName(char* _name)
+	{
+		if (name != nullptr && strlen(name) > 1)
+		{
+			delete[] this->name;
+			this->name = new char[strlen(name) + 1];
+			strcpy_s(this->name, strlen(name) + 1, name);
+		}
+		else
+		{
+			cout << "Enter a valid event name.";
+		}
+	}
+	
+	void setDate(string _date) {
+		this->date = _date;
+	}
+	void setTime(string _time) {
+		this->time = _time;
+	}
+	void setType(eventType type)
+	{
+		if (type >= 0 && type <= 4)
+			this->type = type;
+	}
+
 
 	//getters
-	string getName();
-	string getDate();
-	string getTime();
+	char* getName()
+	{
 
+		if (this->name != nullptr)
+		{
+			char* copyname = new char[strlen(this->name) + 1];
+			strcpy_s(copyname, strlen(this->name) + 1, this->name);
+			return copyname;
+		}
+		else
+			return nullptr;
+	}
+	string getDate() {
+		return date;
+	}
+	string getTime() {
+		return time;
+	}
+	int getType() {
+		return type;
+	}
+
+	Event(const Event& e) {
+		if (e.name != nullptr)
+		{
+			this->name = new char[strlen(e.name) + 1];
+			strcpy_s(this->name, strlen(e.name) + 1, e.name);
+		}
+		else
+		{
+			this->name = new char[strlen("unknown") + 1];
+			strcpy_s(this->name, strlen("unknown") + 1, "unknown");
+		}
+		this->date = e.date;
+		this->time = e.time;
+		this->type = e.type;
+	}
+
+	~Event()
+	{
+		if (this->name != nullptr)
+		{
+			delete[] this->name;
+		}
+	}
 };

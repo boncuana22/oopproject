@@ -2,44 +2,6 @@
 #include<string>
 using namespace std;
 
-//class Event
-/*class Event {
-private:
-	string name;
-	string date;
-	string time;
-public:
-	Event(string _name, string _date, string _time) {
-		name = _name;
-		date = _date;
-		time = _time;
-	}
-
-	//setters
-	void setName(string _name) {
-		name = _name;
-	}
-	void setDate(string _date) {
-		date = _date;
-	}
-	void setTime(string _time) {
-		time = _time;
-	}
-
-	//getters
-	string getName() {
-		return name;
-	}
-	string getDate() {
-		return date;
-	}
-	string getTime() {
-		return time;
-	}
-
-};
-*/
-
 
 class EventLocation {
 private:
