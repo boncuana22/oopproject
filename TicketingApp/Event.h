@@ -1,5 +1,7 @@
 #pragma once
-#include<iostream>
+#include <iostream>
+#include <string>
+#include <string.h>
 using namespace std;
 
 enum eventType { football_game, handball_game, basketball_game, other };
@@ -62,6 +64,21 @@ public:
 			this->type = type;
 	}
 
+	void setTypeString(string type)
+	{
+		if (type == "football_game")
+			this->type = eventType::football_game;
+		else
+			if (type == "handball_game")
+				this->type = eventType::handball_game;
+			else
+				if (type == "basketball_game")
+					this->type = eventType::basketball_game;
+				else
+					if (type == "other")
+					this->type = eventType::other;
+	}
+
 
 	//getters
 	char* getName()
@@ -95,12 +112,38 @@ public:
 		}
 		else
 		{
-			this->name = new char[strlen("unknown") + 1];
-			strcpy_s(this->name, strlen("unknown") + 1, "unknown");
+			this->name = new char[strlen("match name") + 1];
+			strcpy_s(this->name, strlen("match name") + 1, "match name");
 		}
 		this->date = e.date;
 		this->time = e.time;
 		this->type = e.type;
+	}
+
+	// = operator
+	Event& operator=(const Event& e)
+	{
+		if (this != &e)
+		{
+			delete[] name;
+
+			if (e.name != nullptr)
+			{
+				this->name = new char[strlen(e.name) + 1];
+				strcpy_s(this->name, strlen(e.name) + 1, e.name);
+			}
+			else
+			{
+				this->name = new char[strlen("unknown") + 1];
+				strcpy_s(this->name, strlen("unknown") + 1, "unknown");
+			}
+
+			this->type = e.type;
+			this->date = e.date;
+			this->time = e.time;
+		}
+
+		return *this;
 	}
 
 	//destructor
@@ -111,4 +154,46 @@ public:
 			delete[] this->name;
 		}
 	}
+
+	// << and >> operators
+	friend ostream& operator<<(ostream& out, Event e);
+	friend istream& operator>>(istream& in, Event& e);
 };
+
+
+ostream& operator<<(ostream& out, Event e)
+{
+	out << endl;
+	out << "Event name: " << e.name << endl;
+	out << e.date;
+	out << e.time;
+	out << "Type: " << e.getType() << endl;
+	return out;
+}
+
+istream& operator>>(istream& in, Event& e)
+{
+	cout << "\nEvent name: ";
+	char buffer[100];
+	in >> ws;
+	in.getline(buffer, 99);
+
+	if (e.name != nullptr)
+	{
+		delete[] e.name;
+		e.name = nullptr;
+	}
+	e.setName(buffer);
+
+	in >> e.date;
+	in >> e.time;
+
+	//enum type 
+	cout << "\nThe event type (concert,play,football match,movie,other): ";
+	char type[100];
+	in >> ws;
+	in.getline(type, 99);
+	e.setTypeString(type);
+
+	return in;
+}

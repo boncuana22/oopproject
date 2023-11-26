@@ -1,5 +1,7 @@
 #pragma once
-#include<iostream>
+#include <iostream>
+#include <string>
+#include <string.h>
 using namespace std;
 
 enum ticketType{VIP, GoldenCircle, Tribune, other };
