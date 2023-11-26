@@ -5,13 +5,28 @@ using namespace std;
 
 class EventLocation {
 private:
-	string name;
+	char* name;
 	int maxSeats;
 
 public:
-	//constructor
+	//constructors
+	EventLocation() {
+		this->name = new char[strlen("match name") + 1];
+		strcpy_s(this->name, strlen("match name") + 1, "match name");
+		this->maxSeats = 0;
+	}
+
 	EventLocation(string _name, int _maxSeats) {
-		this->name = _name;
+		if (name != nullptr && strlen(name) > 1)
+		{
+			this->name = new char[strlen(name) + 1];
+			strcpy_s(this->name, strlen(name) + 1, name);
+		}
+		else
+		{
+			cout << "Enter a valid event name:";
+
+		}
 		this->maxSeats = _maxSeats;
 	}
 
@@ -26,7 +41,40 @@ public:
 
 	//copy constructor
 	EventLocation(const EventLocation& el){
-		this->name = el.name;
+		if (el.name != nullptr)
+		{
+			this->name = new char[strlen(el.name) + 1];
+			strcpy_s(this->name, strlen(el.name) + 1, el.name);
+		}
+		else
+		{
+			this->name = new char[strlen("match name") + 1];
+			strcpy_s(this->name, strlen("match name") + 1, "match name");
+		}
 		this->maxSeats = el.maxSeats;
+	}
+
+	// = operator
+	EventLocation& operator=(const EventLocation& el)
+	{
+		if (this != &el)
+		{
+			delete[] name;
+
+			if (el.name != nullptr)
+			{
+				this->name = new char[strlen(el .name) + 1];
+				strcpy_s(this->name, strlen(el.name) + 1, el.name);
+			}
+			else
+			{
+				this->name = new char[strlen("match name") + 1];
+				strcpy_s(this->name, strlen("match name") + 1, "match name");
+			}
+
+			this->maxSeats = el.maxSeats;
+		}
+
+		return *this;
 	}
 };
