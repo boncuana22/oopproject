@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <string.h>
+#include <cstring>
 using namespace std;
 
 enum eventType { football_game, handball_game, basketball_game, other };
@@ -12,8 +13,10 @@ private:
 	string date;
 	string time;
 	eventType type;
+	static int totalEvents;  // static member to track the total number of events
+
 public:
-	//constructors
+	// constructors
 	Event()
 	{
 		this->name = new char[strlen("match name") + 1];
@@ -22,36 +25,33 @@ public:
 		this->type = other;
 	}
 
-	Event(const char* _name, string _date, string _time) {
-		if (name != nullptr && strlen(name) > 1)
-		{
+	Event(const char* _name, const string& _date, const string& _time)
+		: name(nullptr), date(_date), time(_time), type(other) {
+		if (_name != nullptr && strlen(_name) > 0) {
 			this->name = new char[strlen(name) + 1];
-			strcpy_s(this->name, strlen(name) + 1, name);
+			strcpy_s(this->name, strlen(name) + 1, _name); 
 		}
-		else
-		{
-			cout << "Enter a valid event name:";
 
+		else {
+			cout<< "Invalid event name." <<endl;
 		}
 		this->date = _date;
 		this->time = _time;
 	}
 
-	//setters
+	// setters
 	void setName(char* _name)
 	{
-		if (name != nullptr && strlen(name) > 1)
-		{
+		if (_name != nullptr && strlen(_name) > 0) {
 			delete[] this->name;
 			this->name = new char[strlen(name) + 1];
-			strcpy_s(this->name, strlen(name) + 1, name);
+			strcpy_s(this->name, strlen(name) + 1, _name);
 		}
-		else
-		{
-			cout << "Enter a valid event name.";
+		else {
+			cout << "Invalid event name." << endl;
 		}
 	}
-	
+
 	void setDate(string _date) {
 		this->date = _date;
 	}
@@ -76,11 +76,11 @@ public:
 					this->type = eventType::basketball_game;
 				else
 					if (type == "other")
-					this->type = eventType::other;
+						this->type = eventType::other;
 	}
 
 
-	//getters
+	// getters
 	char* getName()
 	{
 
@@ -103,7 +103,7 @@ public:
 		return type;
 	}
 
-	//copy constructor
+	// copy constructor
 	Event(const Event& e) {
 		if (e.name != nullptr)
 		{
@@ -118,6 +118,11 @@ public:
 		this->date = e.date;
 		this->time = e.time;
 		this->type = e.type;
+	}
+
+	// static method to get the total number of events
+	static int getTotalEvents() {
+		return totalEvents;
 	}
 
 	// = operator
@@ -146,7 +151,7 @@ public:
 		return *this;
 	}
 
-	//destructor
+	// destructor
 	~Event()
 	{
 		if (this->name != nullptr)
@@ -160,6 +165,7 @@ public:
 	friend istream& operator>>(istream& in, Event& e);
 };
 
+int Event::totalEvents = 0;
 
 ostream& operator<<(ostream& out, Event e)
 {
@@ -189,7 +195,7 @@ istream& operator>>(istream& in, Event& e)
 	in >> e.time;
 
 	//enum type 
-	cout << "\nThe event type (football_game, handball_game, basketball_game, other): ";
+	cout << "\nThe event type ( football_game, handball_game, basketball_game, other ): ";
 	char type[100];
 	in >> ws;
 	in.getline(type, 99);

@@ -1,36 +1,26 @@
 #pragma once
-#include<iostream>
-#include<Event.h>
+#include <iostream>
+#include <string>
+#include <string.h>
+#include "Event.h"
 using namespace std;
 
-class EventLocation {
+class EventLocation : public Event {
 private:
-	char* name;
 	int maxSeats;
+	const int maxAllowedSeats;  // constant member for the maximum allowed seats
 
 public:
-	//constructors
-	EventLocation() {
-		this->name = new char[strlen("match name") + 1];
-		strcpy_s(this->name, strlen("match name") + 1, "match name");
-		this->maxSeats = 0;
+
+	// default constructor
+	EventLocation() : Event(), maxSeats(0), maxAllowedSeats(0) {}
+
+	// constructor with parameters
+	EventLocation(const char* _name, int _maxSeats, const int _maxAllowedSeats)
+		: Event(), maxSeats(_maxSeats), maxAllowedSeats(_maxAllowedSeats) {
 	}
 
-	EventLocation(string _name, int _maxSeats) {
-		if (name != nullptr && strlen(name) > 1)
-		{
-			this->name = new char[strlen(name) + 1];
-			strcpy_s(this->name, strlen(name) + 1, name);
-		}
-		else
-		{
-			cout << "Enter a valid event name:";
-
-		}
-		this->maxSeats = _maxSeats;
-	}
-
-	//setters & getters
+	// setters & getters
 	void setMaxSeats(int _maxSeats) {
 		if (maxSeats >= 0 && maxSeats <= 30000)
 			this->maxSeats = _maxSeats;
@@ -39,42 +29,16 @@ public:
 		return maxSeats;
 	}
 
-	//copy constructor
-	EventLocation(const EventLocation& el){
-		if (el.name != nullptr)
-		{
-			this->name = new char[strlen(el.name) + 1];
-			strcpy_s(this->name, strlen(el.name) + 1, el.name);
-		}
-		else
-		{
-			this->name = new char[strlen("match name") + 1];
-			strcpy_s(this->name, strlen("match name") + 1, "match name");
-		}
-		this->maxSeats = el.maxSeats;
+	// copy constructor
+	EventLocation(const EventLocation& el) 
+		: Event(el), maxSeats(el.maxSeats),maxAllowedSeats(el.maxAllowedSeats){}
+
+	int getMaxAllowedSeats() const {
+		return maxAllowedSeats;
 	}
 
-	// = operator
-	EventLocation& operator=(const EventLocation& el)
-	{
-		if (this != &el)
-		{
-			delete[] name;
-
-			if (el.name != nullptr)
-			{
-				this->name = new char[strlen(el .name) + 1];
-				strcpy_s(this->name, strlen(el.name) + 1, el.name);
-			}
-			else
-			{
-				this->name = new char[strlen("match name") + 1];
-				strcpy_s(this->name, strlen("match name") + 1, "match name");
-			}
-
-			this->maxSeats = el.maxSeats;
-		}
-
-		return *this;
+	// destructor
+	~EventLocation() {
+		// No need to delete name, it's already handled by the base class (Event)
 	}
-};
+}; 

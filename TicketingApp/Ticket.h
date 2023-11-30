@@ -1,31 +1,35 @@
 #pragma once
-#include<iostream>
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <vector>
 using namespace std;
 
-enum ticketType{VIP, GoldenCircle, Tribune, other };
+enum ticketType{VIP, GoldenCircle, Tribune};
 
 class Ticket {
 private:
-	int ticketID;
+	vector<int> ticketID; 
 	ticketType type;
+
 public:
 	//constructor
-	Ticket(int _ticketID, ticketType _type) {
+	Ticket(vector<int> _ticketID, ticketType _type) {
 		this->ticketID = _ticketID;
 		this->type = _type;
 	}
 
 	//setters
-	void setTicketID(int _ticketID) {
+	void setTicketID(const vector<int>& _ticketID) {
 		this->ticketID = _ticketID;
 	}
 	void setType(ticketType _type) {
-		if (type >= 0 && type <= 4)
+		if (type >= 0 && type <= 3)
 			this->type = type;
 	}
 
 	//getters
-	int getTicketID() {
+	vector<int> getTicketID() const {
 		return ticketID;
 	}
 	int getType() {
