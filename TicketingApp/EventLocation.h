@@ -7,25 +7,25 @@ using namespace std;
 
 class EventLocation : public Event {
 private:
-	string adress;
+	string address;
 	int maxSeats;
 	const int maxAllowedSeats;  // constant member for the maximum allowed seats
 
 public:
 	// default constructor
-	EventLocation() : Event(), adress(""), maxSeats(0), maxAllowedSeats(2500) {}
+	EventLocation() : Event(), address(""), maxSeats(0), maxAllowedSeats(2500) {}
 
 	// constructor with parameters
 	EventLocation(const char* _name, string _adress, int _maxSeats, const int _maxAllowedSeats)
-		: Event(), adress(_adress), maxSeats(_maxSeats), maxAllowedSeats(_maxAllowedSeats) {
+		: Event(), address(_adress), maxSeats(_maxSeats), maxAllowedSeats(_maxAllowedSeats) {
 	}
 
 	// setters & getters
 	void setAdress(string _adress) {
-		this->adress = _adress;
+		this->address = _adress;
 	}
 	string getAdress() {
-		return this->adress;
+		return this->address;
 	}
 
 	void setMaxSeats(int _maxSeats) {
@@ -43,7 +43,7 @@ public:
 
 	// copy constructor
 	EventLocation(const EventLocation& el) 
-		: Event(el), adress(el.adress), maxSeats(el.maxSeats),maxAllowedSeats(el.maxAllowedSeats){}
+		: Event(el), address(el.address), maxSeats(el.maxSeats),maxAllowedSeats(el.maxAllowedSeats){}
 
 
 	void displayDetails(const EventLocation& ) {
@@ -68,7 +68,7 @@ ostream& operator<<(ostream& os, const EventLocation& el)
 {
 	os << "Event Location Details:"<< endl;
 	os << "Name: " << el.getName() << endl;
-	os << "Address: " << el.adress << endl;
+	os << "Address: " << el.address << endl;
 	os << "Max Seats: " << el.getMaxSeats() << endl;
 	return os;
 }
@@ -83,7 +83,7 @@ istream& operator>>(istream& is, EventLocation& el) {
 
 	cout << "Enter Event Address: ";
 	is >> ws;  
-	is >> el.adress;
+	is >> el.address;
 
 	cout << "Enter Max Seats: ";
 	is >> el.maxSeats;
