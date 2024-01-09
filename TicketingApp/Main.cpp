@@ -9,7 +9,6 @@
 using namespace std;
 
 
-
 /*  //from phase 1
 	//example of using static member
 	Event::setTotalEvents(2);
