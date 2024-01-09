@@ -212,9 +212,6 @@ ostream& operator<<(ostream& out, Ticket t)
     out << "Seat: ";
     out << t.seat << endl;
     out << endl;
-
-    //out << "Date: " << date.getMonth() << " " << date.day << "," << date.year << endl;
-    //out << "Hour: " << date.time << endl;
     return out;
 }
 

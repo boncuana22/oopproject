@@ -16,13 +16,13 @@ void menu(int option, Event e1, Event e2, Event e3)
 	{
 		cout << endl << "\nThe events are: " << endl;
 		cout << endl;
-		cout << endl << "***********************************";
+		cout << endl << "-----------------------------------";
 		cout << e1;
-		cout << endl << "***********************************";
+		cout << endl << "-----------------------------------";
 		cout << e2;
-		cout << endl << "***********************************";
+		cout << endl << "-----------------------------------";
 		cout << e3;
-		cout << endl << "***********************************";
+		cout << endl << "-----------------------------------";
 		break;
 	}
 	case 2:
@@ -31,7 +31,7 @@ void menu(int option, Event e1, Event e2, Event e3)
 		menu(1, e1, e2, e3);
 
 		cout << endl << "Choose for which event you what to buy a ticket: ";
-		cout << endl << "Write the number(1->3): " << endl;
+		cout << endl << "Write the number 1 -> 3\n" << endl;
 		cin >> option;
 		switch (option)
 		{
@@ -47,9 +47,9 @@ void menu(int option, Event e1, Event e2, Event e3)
 			t1.serialize();
 
 			cout << "\nTicket created! ";
-			cout << endl << "***********************************" << endl;
+			cout << endl << "-----------------------------------" << endl;
 			cout << t1;
-			cout << endl << "***********************************" << endl;
+			cout << endl << "-----------------------------------" << endl;
 			cout << endl << "ATTENTION! Save the ticket id in order to validate the ticket" << endl;
 
 			break;
@@ -67,9 +67,9 @@ void menu(int option, Event e1, Event e2, Event e3)
 			t2.serialize();
 
 			cout << "\nTicket created! ";
-			cout << endl << "***********************************" << endl;
+			cout << endl << "-----------------------------------" << endl;
 			cout << t2;
-			cout << endl << "***********************************" << endl;
+			cout << endl << "-----------------------------------" << endl;
 			cout << endl << "ATTENTION! Save the ticket id in order to validate the ticket" << endl;
 			break;
 		}
@@ -86,9 +86,9 @@ void menu(int option, Event e1, Event e2, Event e3)
 			t3.serialize();
 
 			cout << "\nTicket created! ";
-			cout << endl << "***********************************" << endl;
+			cout << endl << "-----------------------------------" << endl;
 			cout << t3;
-			cout << endl << "***********************************" << endl;
+			cout << endl << "-----------------------------------" << endl;
 			cout << endl << "ATTENTION! Save the ticket id in order to validate the ticket" << endl;
 			break;
 		}
@@ -155,7 +155,8 @@ int main()
 		cout << endl << "|   2`  Buy a ticket             |\n";
 		cout << endl << "|   3`  Validate a ticket        |\n";
 		cout << endl << "|   4`  Close the application    |\n";
-
+		cout << endl;
+		cout << "Your option = ";
 		cin >> option;
 		menu(option, handball, basketball, football);
 	}
