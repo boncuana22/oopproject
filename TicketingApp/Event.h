@@ -3,6 +3,7 @@
 #include <string>
 #include <string.h>
 #include <vector>
+
 using namespace std;
 
 enum eventType { football_game, handball_game, basketball_game, other };
@@ -212,7 +213,6 @@ istream& operator>>(istream& is, Event& e) {
 
 	return is;
 }
-
 
 
 

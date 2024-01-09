@@ -3,6 +3,7 @@
 #include <string>
 #include <string.h>
 #include "Event.h"
+
 using namespace std;
 
 class EventLocation : public Event {

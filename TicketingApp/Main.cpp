@@ -138,7 +138,7 @@ int main()
 {
 
 	Event handball("CSM Bucuresti - Rapid Bucuresti", "29.01.2023", "16:30");
-	Event basketball("Corona Brasov - SCM Craiova", "29.01.2023", "19:30");
+	Event basketball("Corona Brasov - CSM Craiova", "29.01.2023", "19:30");
 	Event football("FCSB - Rapid Bucuresti", "29.01.2023", "20:30");
 	handball.setTypeString("handball_game");
 	basketball.setTypeString("basketball_game");
@@ -147,7 +147,7 @@ int main()
 	cout << endl << "-----------------------------------";
 	cout << endl << "            TICKETING APP          ";
 	cout << endl << "-----------------------------------";
-	cout << endl << "| Welcome to my ticketing app! |\n";
+	cout << endl << "|   Welcome to my ticketing app!  |\n";
 	cout << endl << "Choose from the following options: \n";
 	int option = 0;
 	while (option != 4) {
