@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <string.h>
+#include <vector>
 using namespace std;
 
 enum eventType { football_game, handball_game, basketball_game, other };
@@ -109,6 +110,7 @@ public:
 		}
 	}
 
+
 	// copy constructor
 	Event(const Event& e) {
 		if (e.name != nullptr)
@@ -157,6 +159,7 @@ public:
 		return *this;
 	}
 
+
 	// destructor
 	~Event()
 	{
@@ -173,6 +176,8 @@ public:
 };
 
 int Event::totalEvents = 0;
+
+
 
 // overloading << op
 ostream& operator<<(ostream& os, Event e)

@@ -2,33 +2,60 @@
 #include <iostream>
 #include <string>
 #include <string.h>
-#include <vector>
+#include <fstream>
+#include "Event.h"
+#include "EventLocation.h"
+#include "IDGenerator.h"
+
 using namespace std;
 
 enum ticketType { VIP, GoldenCircle, Tribune, Other };
 
-class Ticket {
+class TicketAbstract
+{
+public:
+    virtual void validateTicket(int i) = 0;
+};
+
+class Ticket : public IdGenerator, public TicketAbstract {
 private:
-    vector<int> ticketID;
+    int UNIQUE_ID;
+    Event event;
+    string category;
+    int seat;
+    int row;
     ticketType type;
 
 public:
     // default constructor
-    Ticket() {
-        this->ticketID = {};
-        this->type = Other;
+    Ticket() :UNIQUE_ID(0), IdGenerator(), event()
+    {
+        this->seat = 0;
+        this->row = 0;
+        this->category = "";
     }
 
     // constructor with parameters
-    Ticket(vector<int> _ticketID, ticketType _type) {
-        this->ticketID = _ticketID;
-        this->type = _type;
+    Ticket(Event event, int i, int row, int seat) :event(event), IdGenerator()
+    {
+        this->row = row;
+        this->seat = seat;
+        this->category = "";
+        this->event = event;
+        setId();
     }
 
     // setters
-    void setTicketID(const vector<int>& _ticketID) {
-        this->ticketID = _ticketID;
+    void setRow(int row)
+    {
+        this->row = row;
     }
+
+    void setSeat(int s)
+    {
+        this->seat = s;
+    }
+
     void setType(ticketType _type) {
         if (type >= 0 && type <= 3)
             this->type = type;
@@ -49,9 +76,6 @@ public:
     }
 
     // getters
-    vector<int> getTicketID() const {
-        return ticketID;
-    }
     int getType() const {
         return type;
     }
@@ -65,34 +89,101 @@ public:
         }
     }
 
-    void displayElements() const {
-        cout << "Ticket elements:" << endl;
-        cout << "ID:";
-        for (int i : ticketID) {
-            cout << " " << i;
+    bool validateId(int id)
+    {
+        ifstream idFile("idFile.txt", ios::in);
+        bool ok = 1;
+        if (idFile.is_open())
+        {
+            while (!idFile.eof())
+            {
+                int number;
+                idFile >> number;
+                if (number == id)
+                {
+                    ok = 0;	//the id already exists (it's not unique)
+                }
+            }
+            idFile.close();
         }
-        cout << endl << "Type: " << type;
+        return ok;
     }
 
-    // copy constructor
-    Ticket(const Ticket& t) {
-        this->ticketID = t.ticketID;
-        this->type = t.type;
+    virtual void manageId()
+    {
+        ofstream idFile("idFile.txt", ios::out | ios::app);
+        if (idFile.is_open())
+            idFile << UNIQUE_ID << endl;
+        idFile.close();
     }
-
-    void addID(int value) {
-        ticketID.push_back(value);
-    }
-
-    // validate that the ticket IDs are non-negative
-    bool isValidTicketIDs(const Ticket& ticket) {
-        for (int id : ticket.getTicketID()) {
-            if (id < 0) {
-                return false;
+    void setId()
+    {
+        int i;
+        int ok = 0;
+        i = generateId();
+        while (ok == 0)
+        {
+            if (validateId(i) == 0)
+            {
+                i = generateId();
+            }
+            else
+            {
+                this->UNIQUE_ID = i;
+                ok = 1;
+                manageId();
             }
         }
-        return true;
+
     }
+    void validateTicket(int i)
+    {
+        if (validateId(i) == 0)
+            cout << endl << "The ticket is valid";
+    }
+    void serialize()
+    {
+        ofstream f("Tickets.bin", ios::binary | ios::app);
+        f.write((char*)&UNIQUE_ID, sizeof(UNIQUE_ID));
+        f.write((char*)&row, sizeof(row));
+        f.write((char*)&seat, sizeof(seat));
+        f.close();
+    }
+
+    void deserialize()
+    {
+        ifstream f("Tickets.bin", ios::binary);
+        if (f.is_open())
+        {
+            f.read((char*)&UNIQUE_ID, sizeof(UNIQUE_ID));
+            f.read((char*)&row, sizeof(row));
+            f.read((char*)&seat, sizeof(seat));
+            //f.read((&event.getEventName(), sizeof(event.getEventName()));
+            //f.read((char*)&event, sizeof(event));
+            f.close();
+        }
+    }
+
+    static bool validate(int i)
+    {
+        ifstream idFile("idFile.txt", ios::in);
+        bool ok = 1;
+        if (idFile.is_open())
+        {
+            while (!idFile.eof())
+            {
+                int number;
+                idFile >> number;
+                if (number == i)
+                {
+                    ok = 0;	//the id already exists (it's not unique)
+                }
+            }
+            idFile.close();
+        }
+        return ok;
+    }
+
 
     // calculate the price of a ticket based on its type
     double calculateTicketPrice(const Ticket& ticket) {
@@ -109,46 +200,35 @@ public:
     }
 
     //  << and >> operators
-    friend ostream& operator<<(ostream& os, const Ticket& ticket);
-    friend istream& operator>>(istream& is, Ticket& ticket);
+    friend ostream& operator<<(ostream&, Ticket);
+    friend istream& operator>>(istream&, Ticket&);
 };
+ostream& operator<<(ostream& out, Ticket t)
+{
+    out << "Id: ";
+    out << t.UNIQUE_ID << endl;
+    out << "Row: ";
+    out << t.row << endl;
+    out << "Seat: ";
+    out << t.seat << endl;
+    out << endl;
 
-// overloading << op
-ostream& operator<<(ostream& os, const Ticket& ticket) {
-    os << "Ticket IDs: ";
-    for (int id : ticket.getTicketID()) {
-        os << id << " ";
-    }
-    os << "\nTicket Type: ";
-    switch (ticket.getType()) {
-    case VIP: os << "VIP"; break;
-    case GoldenCircle: os << "Golden Circle"; break;
-    case Tribune: os << "Tribune"; break;
-    default: os << "Unknown"; break;
-    }
-    os << "\n";
-    return os;
+    //out << "Date: " << date.getMonth() << " " << date.day << "," << date.year << endl;
+    //out << "Hour: " << date.time << endl;
+    return out;
 }
 
-// overloading >> op
-istream& operator>>(istream& is, Ticket& ticket) {
-    vector<int> ids;
-    int count;
-    cout << "Enter number of Ticket IDs: ";
-    is >> count;
-    ids.resize(count);
+istream& operator>>(istream& in, Ticket& t)
+{
+    cout << "Row: ";
+    int r;
+    in >> r;
+    t.row = r;
+    cout << "Seat: ";
+    int s;
+    in >> s;
+    t.seat = s;
 
-    cout << "Enter Ticket IDs (separated by space): ";
-    for (int i = 0; i < count; ++i) {
-        is >> ids[i];
-    }
 
-    int typeInput;
-    cout << "Enter Ticket Type (0 for VIP, 1 for Golden Circle, 2 for Tribune): ";
-    is >> typeInput;
-
-    ticket.setTicketID(ids);
-    ticket.setType(static_cast<ticketType>(typeInput));
-
-    return is;
+    return in;
 }
